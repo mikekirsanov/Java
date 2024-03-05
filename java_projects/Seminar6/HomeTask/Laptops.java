@@ -11,96 +11,73 @@ package HomeTask;
 
 import java.util.*;
 
-public class Laptops {
+class Laptops {
     private String model;
     private String brand;
     private int ram;
-    private int storageSize;
+    private int storageGB;
     private String operatingSystem;
     private String color;
     private double screenSize;
 
-    public Laptops(String model, String brand, int ram, int storageSize, String operatingSystem, String color, double screenSize) {
+    public Laptops(String model, String brand, int ram, int storageGB, String operatingSystem, String color,
+            double screenSize) {
         this.model = model;
         this.brand = brand;
         this.ram = ram;
-        this.storageSize = storageSize;
+        this.storageGB = storageGB;
         this.operatingSystem = operatingSystem;
         this.color = color;
         this.screenSize = screenSize;
     }
 
-    public String getModel() {
-        return model;
-    }
+    public boolean matchesFilterCriteria(Map<Integer, Object> filterCriteria) {
+        for (Map.Entry<Integer, Object> entry : filterCriteria.entrySet()) {
+            int filterKey = entry.getKey();
+            Object filterValue = entry.getValue();
 
-    public double getScreenSize() {
-        return screenSize;
-    }
-
-    public String getBrand() {
-        return brand;
-    }
-
-    public int getRam() {
-        return ram;
-    }
-
-    public int getStorageSizeGB() {
-        return storageSize;
-    }
-
-    public String getOperatingSystem() {
-        return operatingSystem;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public boolean matchesFilterCriteria(Map<Integer, Object> criteria) {
-        for (Map.Entry<Integer, Object> entry : criteria.entrySet()) {
-            int choice = entry.getKey();
-            Object value = entry.getValue();
-
-            switch (choice) {
+            switch (filterKey) {
                 case 1:
-                    if (!getBrand().toLowerCase().equals(((String) value).toLowerCase())) {
+                    if (ram < Integer.parseInt(filterValue.toString())) {
                         return false;
                     }
                     break;
                 case 2:
-                    if (getRam() < Integer.parseInt((String) value)) {
+                    if (storageGB < Integer.parseInt(filterValue.toString())) {
                         return false;
                     }
                     break;
                 case 3:
-                    if (getStorageSizeGB() < Integer.parseInt((String) value)) {
+                    if (!operatingSystem.equalsIgnoreCase(filterValue.toString())) {
                         return false;
                     }
                     break;
                 case 4:
-                    if (!getOperatingSystem().toLowerCase().equals(((String) value).toLowerCase())) {
+                    if (!color.equalsIgnoreCase(filterValue.toString())) {
                         return false;
                     }
                     break;
                 case 5:
-                    if (getScreenSize() < (double) value) {
+                    if (screenSize < Double.parseDouble(filterValue.toString())) {
                         return false;
                     }
                     break;
+                // Добавьте другие критерии по мере необходимости
             }
         }
         return true;
     }
 
-    public void displayInfo() {
-        System.out.println("Brand: " + brand +
-                ", Model: " + model +
-                ", RAM: " + ram + "GB" +
-                ", Storage: " + storageSize + "GB" +
-                ", OS: " + operatingSystem +
-                ", Color: " + color +
-                ", Screen Size: " + screenSize + " inches");
+    @Override
+    public String toString() {
+        return "Laptop{" +
+                "model='" + model + '\'' +
+                ", brand='" + brand + '\'' +
+                ", ram=" + ram +
+                ", storageGB=" + storageGB +
+                ", operatingSystem='" + operatingSystem + '\'' +
+                ", color='" + color + '\'' +
+                ", screenSize=" + screenSize +
+                '}';
     }
 }

@@ -4,7 +4,9 @@ import java.util.*;
 
 public class LaptopsFilter {
     public static void main(String[] args) {
-        Set<Laptops> laptops = new HashSet<>();
+        Scanner scanner = new Scanner(System.in);
+
+        List<Laptops> laptops = new ArrayList<>();
         laptops.add(new Laptops("HP15sr32", "HP", 8, 512, "Windows 10", "Silver", 15.6));
         laptops.add(new Laptops("DellXPS15", "Dell", 16, 256, "Ubuntu", "Black", 14.0));
         laptops.add(new Laptops("LenovoThinkPad", "Lenovo", 12, 1000, "Windows 11", "Gray", 13.3));
@@ -14,102 +16,66 @@ public class LaptopsFilter {
         laptops.add(new Laptops("GigabyteAero", "Gigabyte", 12, 512, "Mint", "Brown", 14.0));
         laptops.add(new Laptops("HP16er34", "HP", 16, 4000, "Windows 10", "Silver", 16.0));
 
-        Scanner scanner = new Scanner(System.in);
+        List<Laptops> filteredLaptops = laptops;
+        int continueFiltering;
+        Map<Integer, Object> filterCriteria;
 
-        Map<Integer, String> filterCriteria = Map.of(
-                1, "Бренд",
-                2, "Размер ОЗУ (в GB)",
-                3, "Размер накопителя (в GB)",
-                4, "Операционная система",
-                5, "Размер экрана (в дюймах)"
-        );
+        do {
+            filterCriteria = getFilterCriteria(scanner);
+            filteredLaptops = filterLaptops(filteredLaptops, filterCriteria);
 
-        try {
-            Map<Integer, Object> previousCriteria = new HashMap<>();
-            boolean continueFiltering = true;
-
-            while (continueFiltering) {
-                int choice;
-                do {
-                    System.out.println("\nВыберите критерий фильтрации:");
-                    for (int i = 1; i <= filterCriteria.size(); i++) {
-                        System.out.println(i + " - " + filterCriteria.get(i));
-                    }
-
-                    choice = scanner.nextInt();
-                    scanner.nextLine();  // Добавленный код для считывания символа новой строки
-                } while (!filterCriteria.containsKey(choice));
-
-                Object value;
-                if (choice == 5) {
-                    System.out.print(filterCriteria.get(choice) + ": ");
-                    value = scanner.nextDouble();
-                } else {
-                    System.out.print(filterCriteria.get(choice) + ": ");
-                    value = scanner.nextLine();  // Изменено с next() на nextLine()
+            if (!filteredLaptops.isEmpty()) {
+                System.out.println("Результаты фильтрации:");
+                for (Laptops laptop : filteredLaptops) {
+                    System.out.println(laptop);
                 }
-
-                previousCriteria.put(choice, value);
-                filterByCriteria(laptops, previousCriteria);
-
-                System.out.print("Продолжить фильтрацию? (1 - да, 2 - нет): ");
-                int continueChoice = scanner.nextInt();
-                scanner.nextLine();  // Добавленный код для считывания символа новой строки
-                continueFiltering = (continueChoice == 1);
+            } else {
+                System.out.println("Нет результатов по заданным критериям.");
             }
-        } finally {
-            scanner.close();
-        }
+
+            System.out.println("Продолжить фильтрацию?");
+            System.out.println("1 - Да");
+            System.out.println("2 - Нет");
+            System.out.print("Ваш выбор: ");
+            continueFiltering = scanner.nextInt();
+            scanner.nextLine(); // очистим буфер
+        } while (continueFiltering == 1);
     }
 
-    private static void filterByCriteria(Set<Laptops> laptops, Map<Integer, Object> criteria) {
-        System.out.println("\nРезультаты фильтрации по критериям:");
-        boolean found = false;
+    private static Map<Integer, Object> getFilterCriteria(Scanner scanner) {
+        Map<Integer, Object> filterCriteria = new HashMap<>();
+
+        System.out.println("Выберите критерий фильтрации:");
+        System.out.println("1 - Минимальный размер ОЗУ (гигабайты)");
+        System.out.println("2 - Минимальный объем накопителя (гигабайты)");
+        System.out.println("3 - Операционная система");
+        System.out.println("4 - Цвет ноутбука");
+        System.out.println("5 - Минимальный размер экрана (дюймы)");
+
+        int filterKey = scanner.nextInt();
+        System.out.print("Введите значение критерия: ");
+        Object filterValue;
+        if (filterKey == 1 || filterKey == 2 || filterKey == 5) {
+            filterValue = scanner.nextInt();
+        } else {
+            scanner.nextLine(); // очистим буфер
+            filterValue = scanner.nextLine();
+        }
+
+        filterCriteria.put(filterKey, filterValue);
+
+        return filterCriteria;
+    }
+
+    private static List<Laptops> filterLaptops(List<Laptops> laptops, Map<Integer, Object> filterCriteria) {
+        List<Laptops> filteredLaptops = new ArrayList<>();
 
         for (Laptops laptop : laptops) {
-            boolean matchesAllCriteria = true;
-
-            for (Map.Entry<Integer, Object> entry : criteria.entrySet()) {
-                int choice = entry.getKey();
-                Object value = entry.getValue();
-
-                switch (choice) {
-                    case 1:
-                        if (!laptop.getBrand().toLowerCase().contains(((String) value).toLowerCase())) {
-                            matchesAllCriteria = false;
-                        }
-                        break;
-                    case 2:
-                        if (laptop.getRam() < Integer.parseInt((String) value)) {
-                            matchesAllCriteria = false;
-                        }
-                        break;
-                    case 3:
-                        if (laptop.getStorageSizeGB() < Integer.parseInt((String) value)) {
-                            matchesAllCriteria = false;
-                        }
-                        break;
-                    case 4:
-                        if (!laptop.getOperatingSystem().toLowerCase().contains(((String) value).toLowerCase())) {
-                            matchesAllCriteria = false;
-                        }
-                        break;
-                    case 5:
-                        if (laptop.getScreenSize() < (double) value) {
-                            matchesAllCriteria = false;
-                        }
-                        break;
-                }
-            }
-
-            if (matchesAllCriteria) {
-                laptop.displayInfo();
-                found = true;
+            if (laptop.matchesFilterCriteria(filterCriteria)) {
+                filteredLaptops.add(laptop);
             }
         }
 
-        if (!found) {
-            System.out.println("Нет результатов для выбранных критериев.");
-        }
+        return filteredLaptops;
     }
 }

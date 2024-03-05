@@ -27,7 +27,7 @@ public class LaptopsFilter {
             if (!filteredLaptops.isEmpty()) {
                 System.out.println("Результаты фильтрации:");
                 for (Laptops laptop : filteredLaptops) {
-                    System.out.println(laptop);
+                    System.out.println(laptop.toString()); // Вместо прямого доступа к полям, используем геттеры
                 }
             } else {
                 System.out.println("Нет результатов по заданным критериям.");

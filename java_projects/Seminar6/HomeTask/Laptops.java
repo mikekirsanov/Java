@@ -30,6 +30,63 @@ class Laptops {
         this.color = color;
         this.screenSize = screenSize;
     }
+    
+    public String getModel() {
+        return model;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public int getRam() {
+        return ram;
+    }
+
+    public int getStorageGB() {
+        return storageGB;
+    }
+
+    public String getOperatingSystem() {
+        return operatingSystem;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public double getScreenSize() {
+        return screenSize;
+    }
+
+    // Сеттеры
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public void setRam(int ram) {
+        this.ram = ram;
+    }
+
+    public void setStorageGB(int storageGB) {
+        this.storageGB = storageGB;
+    }
+
+    public void setOperatingSystem(String operatingSystem) {
+        this.operatingSystem = operatingSystem;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public void setScreenSize(double screenSize) {
+        this.screenSize = screenSize;
+    }
 
     public boolean matchesFilterCriteria(Map<Integer, Object> filterCriteria) {
         for (Map.Entry<Integer, Object> entry : filterCriteria.entrySet()) {
@@ -62,7 +119,6 @@ class Laptops {
                         return false;
                     }
                     break;
-                // Добавьте другие критерии по мере необходимости
             }
         }
         return true;

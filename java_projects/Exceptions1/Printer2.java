@@ -33,7 +33,6 @@ class Answer2 {
             try {
                 c[i] = a[i] / b[i];
             } catch (ArithmeticException e) {
-                // Re-throw ArithmeticException as a RuntimeException
                 throw new RuntimeException("Деление на ноль");
             }
           }

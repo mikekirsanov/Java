@@ -1,0 +1,301 @@
+/**
+ * Алгоритмы и структуры данных (семинары)
+Урок 4. Структуры данных дерево и хэш-таблица
+Необходимо доработать структуру класса HashMap, реализованную на семинаре.
+У нас появился метод добавления элементов, каким образом я могу распечатать все элементы структуры на экране?
+
+Распечатайте все элементы структуры HashMap переопределив метод toString() - самый простой вариант.
+2****. (Дополнительная, необязательная задача, для тех, кому очень скучно) Добавить возможность перебора
+всех элементов нашей структуры данных, необходимо добавить несколько элементов, а затем перебрать все элементы
+структуры HashTable используя цикл foreach. Подумайте, возможно вам стоит обратиться к интерфейсу Iterable и
+в рамках имплементации подобного интерфейса создать объект типа Iterator, далее, вы реализуете метод next и hasNext,
+наделите способностью нашу структуру HashMap быть перечисляемой.
+ */
+
+ public class Program {
+    public static void main(String[] args) {
+        Employee employee1 = new Employee("AAAA", 33);
+        System.out.println(employee1.hashCode());
+        Employee employee2 = new Employee("AAAA", 41);
+        System.out.println(employee2.hashCode());
+
+        HashMap<String, String> hashMap1 = new HashMap<>(4);
+
+        String oldValue;
+        oldValue = hashMap1.put("+79007774431", "BBBBB");
+        oldValue = hashMap1.put("+79007774432", "CCCCC");
+        oldValue = hashMap1.put("+79007774431", "ABCDE");
+        oldValue = hashMap1.put("+79007774433", "BBBBB1");
+        oldValue = hashMap1.put("+79007774434", "CCCCC1");
+        oldValue = hashMap1.put("+79007774435", "ABCDE1");
+        oldValue = hashMap1.put("+79007774436", "BBBBB2");
+        oldValue = hashMap1.put("+79007774437", "CCCCC2");
+        oldValue = hashMap1.put("+79007774438", "ABCDE2");
+        oldValue = hashMap1.put("+79007774439", "BBBBB3");
+        oldValue = hashMap1.put("+79007774410", "CCCCC3");
+        oldValue = hashMap1.put("+79007774441", "ABCDE3");
+        oldValue = hashMap1.put("+79007774442", "BBBBB4");
+        oldValue = hashMap1.put("+79007774443", "CCCCC4");
+        oldValue = hashMap1.put("+79007774444", "ABCDE4");
+        oldValue = hashMap1.put("+79007774445", "BBBBB5");
+        oldValue = hashMap1.put("+79007774446", "CCCCC5");
+        oldValue = hashMap1.put("+79007774447", "ABCDE5");
+
+        String res = hashMap1.get("+79007774436");
+        res = hashMap1.get("+79017774436");
+
+        oldValue = hashMap1.remove("+79007774436");
+        oldValue = hashMap1.remove("+79007774436");
+
+        for (HashMap<String, String>.Entity element : hashMap1) {
+            System.out.println(element.key);
+        }
+
+        System.out.println("Printing HashMap:");
+        System.out.println(hashMap1);
+
+        System.out.println("Iterating through HashMap:");
+
+    }
+}
+
+import java.util.Iterator;
+
+public class HashMap<K, V> {
+
+    private static final int INIT_BUCKET_COUNT = 16;
+    private static final double LOAD_FACTOR = 0.5;
+    
+
+    private Bucket[] buckets;
+    private int size;
+
+    @Override
+    public Iterator<HashMap.Entity> iterator(){
+        return new HashMapIterator();
+    }
+
+    class HashMapIterator implements Iterator<HashMap.Entity> {
+
+        /**
+         * TODO: Необходимо доработать струкиру класса HashMap.
+         * Добавить возможность перебора всех элементов структуры данных,
+         * необходимо добавить несколько эементов, а затем перебрать все
+         * элементы таблицы, используя цикл foreach, обратившись
+         * к интерфейсу Iterable.
+         * @return 
+         */
+
+        @Override
+        public boolean hasNext(){
+            return false;
+        }
+
+        @Override
+        public Entity next() {
+            return null;
+        }
+    }
+
+    /**
+     * TODO: Вывести все элементы хэш-таблицы на экран через toString()
+     * @return
+     */
+    @Override
+    public String toString(){
+        return super.toString();
+    }
+
+
+    /**
+     * Элемент хэш-таблицы
+     */
+    public class Entity {
+        /**
+         * Ключ
+         */
+        K key;
+
+        /**
+         * Значение элемента
+         */
+        V value;
+    }
+
+
+    /**
+     * Бакет, связный список
+     */
+    class Bucket {
+        /**
+         * Указатель на первый элемент связного списка
+         */
+        Node head;
+         
+        /**
+         * Узел бакета (связного списка)
+         */
+        public class Node {
+        
+            /**
+             * Указатель на следующий элемент связного списка
+             */
+            
+            Node next;
+
+            /**
+             * Значение узла, указывающее на элемент хэш-таблицы
+             */
+            Entity value;
+        }
+
+        public V add(Entity entity){
+            Node node = new Node();
+            node.value = entity;
+
+            if(head == null){
+                head = node;
+                return null;
+            }
+
+            Node currentNode = head;
+            while(true){
+                if(currentNode.value.key.equals(entity.key)){
+                    V buf = currentNode.value.value;
+                    currentNode.value.value = entity.value;
+                    return buf;
+                }
+
+                if(currentNode.next != null){
+                    currentNode = currentNode.next;
+                }
+
+                else {
+                    currentNode.next = node;
+                    return null;
+                }
+            }
+        }
+
+        public V remove(K key){
+            if(head == null){
+                return null;
+            }
+            if(head.value.key.equals(key)){
+                V buf = head.value.value;
+                head = head.next;
+                return buf;
+            }
+            else {
+                Node node = head;
+                while (node.next != null) {
+                    if(node.next.value.key.equals(key)){
+                        V buf = node.next.value.value;
+                        node.next = node.next.next;
+                        return buf;
+                    }
+                    node = node.next;
+                }
+                return null;
+            }
+        }
+
+        public V get(K key){
+            Node node = head;
+            while (node != null) {
+                if(node.value.key.equals(key)){
+                    return node.value.value;
+                }
+
+                node = node.next;
+            }
+            return null;
+        }
+    }
+
+    private int calculateBucketIndex(K key){
+        return Math.abs(key.hashCode()) % buckets.length;
+    }
+
+    private void recalculate(){
+        size = 0;
+        Bucket[] old = buckets;
+        buckets = new HashMap.Bucket[old.length * 2];
+        for (int i = 0; i < old.length; i++) {
+            Bucket bucket = old[i];
+            if(bucket != null){
+                Bucket.Node node = bucket.head;
+                while (node != null) {
+                    put(node.value.key, node.value.value);
+                    node = node.next;
+                }
+            }
+        }
+    }
+
+    public V put(K key, V value){
+        if(size >= buckets.length * LOAD_FACTOR){
+            recalculate();
+        }
+        int index = calculateBucketIndex(key);
+        Bucket bucket = buckets[index];
+        if(bucket == null){
+            bucket = new Bucket();
+            buckets[index] = bucket;
+        }
+
+        Entity entity = new Entity();
+        entity.key = key;
+        entity.value = value;
+
+        V buf = bucket.add(entity);
+        if(buf == null){
+            size++;
+        }
+        return buf;
+    }
+
+    
+
+    public V get(K key){
+        int index = calculateBucketIndex(key);
+        Bucket bucket = buckets[index];
+        if(bucket == null){
+            return null;
+        }
+
+        return bucket.get(key);
+    }
+
+    public V remove(K key){
+        int index = calculateBucketIndex(key);
+        Bucket bucket = buckets[index];
+        if(bucket == null){
+            return null;
+        }
+        V buf = bucket.remove(key);
+        if(buf != null){
+            size--;
+        }
+        return buf;
+    }
+
+    public HashMap() {
+        buckets = new HashMap.Bucket[INIT_BUCKET_COUNT];
+    }
+
+    public HashMap(int initCount) {
+        buckets = new HashMap.Bucket[initCount];
+    }
+    
+}
+
+public class Employee {
+    String name;
+    int age;
+
+    public Employee(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+}

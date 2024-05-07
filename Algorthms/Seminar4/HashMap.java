@@ -61,17 +61,17 @@ public class HashMap<K, V> implements Iterable<HashMap<K, V>.Entity> {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-    sb.append("{\n");
+        sb.append("{\n");
 
-    Iterator<Entity> iterator = iterator();
-    while (iterator.hasNext()) {
-        Entity entity = iterator.next();
-        sb.append("\t").append(entity.key).append(" = ").append(entity.value).append(",\n");
+        Iterator<Entity> iterator = iterator();
+        while (iterator.hasNext()) {
+            Entity entity = iterator.next();
+            sb.append("\t").append(entity.key).append(" = ").append(entity.value).append(",\n");
+        }
+
+        sb.append("}\n");
+        return sb.toString();
     }
-
-    sb.append("}\n");
-    return sb.toString();
-}
 
     /**
      * Элемент хэш-таблицы

@@ -63,14 +63,10 @@ public class HashMap<K, V> implements Iterable<HashMap<K, V>.Entity> {
         StringBuilder sb = new StringBuilder();
     sb.append("{\n");
 
-    for (Bucket bucket : buckets) {
-        if (bucket != null) {
-            Bucket.Node node = bucket.head;
-            while (node != null) {
-                sb.append("\t").append(node.value.key).append(" = ").append(node.value.value).append(",\n");
-                node = node.next;
-            }
-        }
+    Iterator<Entity> iterator = iterator();
+    while (iterator.hasNext()) {
+        Entity entity = iterator.next();
+        sb.append("\t").append(entity.key).append(" = ").append(entity.value).append(",\n");
     }
 
     sb.append("}\n");

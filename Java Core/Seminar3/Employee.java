@@ -13,16 +13,17 @@
         this.salary = salary;
     }
 
-    public int getYear() {
-        return year;
-    }
+    public int compareDates(Employee other) {
+        int[] thisDate = {this.year, this.month, this.day};
+        int[] otherDate = {other.year, other.month, other.day};
 
-    public int getMonth() {
-        return month;
-    }
-
-    public int getDay() {
-        return day;
+        for (int i = 0; i < 3; i++) {
+            int comparison = Integer.compare(thisDate[i], otherDate[i]);
+            if (comparison != 0) {
+                return comparison;
+            }
+        }
+        return 0;
     }
 
     public double getSalary() {

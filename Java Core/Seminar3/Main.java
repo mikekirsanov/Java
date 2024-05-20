@@ -1,28 +1,18 @@
 ﻿import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * Написать прототип компаратора - метод внутри класса сотрудника, сравнивающий
+ * две даты, представленные в виде трёх чисел гггг-мм-дд, без использования
+ * условного оператора.
+ * Опишите класс руководителя, наследник от сотрудника. Перенесите статический
+ * метод повышения зарплаты в класс руководителя, модифицируйте метод таким
+ * образом, чтобы он мог поднять заработную плату всем, кроме руководителей. В
+ * основной программе создайте руководителя и поместите его в общий массив
+ * сотрудников. Повысьте зарплату всем сотрудникам и проследите, чтобы зарплата
+ * руководителя не повысилась.
+ */
 public class Main {
-
-    public static void raiseSalaries(List<Employee> employees, double amount) {
-        for (Employee e : employees) {
-            if (!(e instanceof Manager)) {
-                e.setSalary(e.getSalary() + amount);
-            }
-        }
-    }
-
-    public static int compareDates(Employee e1, Employee e2) {
-        int[] date1 = {e1.getYear(), e1.getMonth(), e1.getDay()};
-        int[] date2 = {e2.getYear(), e2.getMonth(), e2.getDay()};
-
-        for (int i = 0; i < 3; i++) {
-            int comparison = Integer.compare(date1[i], date2[i]);
-            if (comparison != 0) {
-                return comparison;
-            }
-        }
-        return 0;
-    }
 
     public static void main(String[] args) {
         Employee emp1 = new Employee("Алиса", 2021, 5, 20, 50000);
@@ -39,7 +29,7 @@ public class Main {
             System.out.println(e);
         }
 
-        raiseSalaries(employees, 5000);
+        Manager.raiseSalaries(employees, 5000);
 
         System.out.println("\nПосле повышения:");
         for (Employee e : employees) {
@@ -47,7 +37,8 @@ public class Main {
         }
 
         System.out.println("\nСравнение дат:");
-        System.out.println("Алиса vs Борис: " + compareDates(emp1, emp2));
-        System.out.println("Алиса vs Валерий: " + compareDates(emp1, manager));
+        System.out.println("Алиса vs Борис: " + emp1.compareDates(emp2));
+        System.out.println("Алиса vs Валерий: " + emp1.compareDates(manager));
+   
     }
 }

@@ -1,0 +1,8 @@
+Petya подключился к беседе
+Vasya подключился к беседе
+Vasya: Hi!
+Petya: How are you?
+Petya подключился к беседе
+Vasya подключился к беседе
+Vasya: Hello
+Petya: Good evening!

@@ -47,8 +47,8 @@ public class MontyHallSimulation {
         }
 
         System.out.println("Сводная статистика:");
-        System.out.printf("Стратегия остаться - Среднее количество побед: %.3f | Стандартное отклонение: %.12f%n", stayStats.getMean(), stayStats.getStandardDeviation());
-        System.out.printf("Стратегия переключиться - Среднее количество побед: %.3f | Стандартное отклонение: %.12f%n", switchStats.getMean(), switchStats.getStandardDeviation());
+        System.out.printf("Стратегия остаться - Среднее количество побед: %.3f | Стандартное отклонение: %.3f%n", stayStats.getMean(), stayStats.getStandardDeviation());
+        System.out.printf("Стратегия переключиться - Среднее количество побед: %.3f | Стандартное отклонение: %.3f%n", switchStats.getMean(), switchStats.getStandardDeviation());
     }
 
     private static boolean simulateMontyHall(Random rand, boolean switchStrategy) {
